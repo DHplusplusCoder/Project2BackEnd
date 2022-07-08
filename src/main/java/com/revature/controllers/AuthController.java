@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -32,6 +33,8 @@ public class AuthController {
 
         session.setAttribute("user", optional.get());
 
+
+
         return ResponseEntity.ok(optional.get());
     }
 
@@ -48,7 +51,8 @@ public class AuthController {
                 registerRequest.getEmail(),
                 registerRequest.getPassword(),
                 registerRequest.getFirstName(),
-                registerRequest.getLastName());
+                registerRequest.getLastName(),
+                User.Role.User);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(created));
     }

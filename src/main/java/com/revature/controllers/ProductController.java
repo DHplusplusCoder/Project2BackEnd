@@ -3,10 +3,12 @@ package com.revature.controllers;
 import com.revature.annotations.Authorized;
 import com.revature.dtos.ProductInfo;
 import com.revature.models.Product;
+import com.revature.models.User;
 import com.revature.services.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,13 +38,20 @@ public class ProductController {
         if(!optional.isPresent()) {
             return ResponseEntity.notFound().build();
         }
+
         return ResponseEntity.ok(optional.get());
     }
 
     @Authorized
     @PutMapping
-    public ResponseEntity<Product> upsert(@RequestBody Product product) {
-        return ResponseEntity.ok(productService.save(product));
+    public ResponseEntity<Product> upsert(@RequestBody Product product, HttpSession session) {
+        User u= (User) session.getAttribute("user");
+        if(u.getRole().toString()=="Admin") {
+            return ResponseEntity.ok(productService.save(product));
+        }
+        else{
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @Authorized
@@ -83,5 +92,17 @@ public class ProductController {
         productService.delete(id);
 
         return ResponseEntity.ok(optional.get());
+    }
+
+    @Authorized
+    @GetMapping("/featured")
+    public ResponseEntity<List<Product>> getFeaturedProducts(@RequestBody boolean f) {
+        return ResponseEntity.ok(productService.getFeaturedProducts(f));
+    }
+
+    @Authorized
+    @GetMapping("/sale")
+    public ResponseEntity<List<Product>> getProductsOnSale() {
+        return ResponseEntity.ok(productService.getProductsOnSale());
     }
 }
