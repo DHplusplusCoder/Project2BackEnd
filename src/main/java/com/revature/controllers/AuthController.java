@@ -56,4 +56,16 @@ public class AuthController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(created));
     }
+    @GetMapping("/session")
+    public User sessiongetter(HttpSession session){
+
+        if (session.getAttribute("user")!=null){
+            User u= (User) session.getAttribute("user");
+            u.setPassword("");
+            return u;
+        }
+        else{
+            return new User();
+        }
+    }
 }

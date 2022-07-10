@@ -10,7 +10,7 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query("FROM Product WHERE featured = 'true'")
-    List<Product> getFeaturedProducts(boolean f);
+    List<Product> getFeaturedProducts();
 
     @Query("FROM Product WHERE sale > 0")
     List<Product> getProductsOnSale();

@@ -37,8 +37,8 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public List<Product> getFeaturedProducts(boolean f) {
-        return productRepository.getFeaturedProducts(f);
+    public List<Product> getFeaturedProducts() {
+        return productRepository.getFeaturedProducts();
     }
 
     public List<Product> getProductsOnSale() {

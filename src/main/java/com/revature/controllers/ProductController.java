@@ -83,21 +83,26 @@ public class ProductController {
 
     @Authorized
     @DeleteMapping("/{id}")
-    public ResponseEntity<Product> deleteProduct(@PathVariable("id") int id) {
+    public ResponseEntity<Product> deleteProduct(@PathVariable("id") int id, HttpSession session) {
         Optional<Product> optional = productService.findById(id);
+        User u= (User) session.getAttribute("user");
+        if (u.getRole().toString()=="Admin") {
+            if (!optional.isPresent()) {
+                return ResponseEntity.notFound().build();
+            }
+            productService.delete(id);
 
-        if(!optional.isPresent()) {
+            return ResponseEntity.ok(optional.get());
+        }
+        else{
             return ResponseEntity.notFound().build();
         }
-        productService.delete(id);
-
-        return ResponseEntity.ok(optional.get());
     }
 
     @Authorized
     @GetMapping("/featured")
-    public ResponseEntity<List<Product>> getFeaturedProducts(@RequestBody boolean f) {
-        return ResponseEntity.ok(productService.getFeaturedProducts(f));
+    public ResponseEntity<List<Product>> getFeaturedProducts() {
+        return ResponseEntity.ok(productService.getFeaturedProducts());
     }
 
     @Authorized
