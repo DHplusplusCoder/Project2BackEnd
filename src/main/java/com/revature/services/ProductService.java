@@ -40,6 +40,14 @@ public class ProductService {
     public List<Product> getFeaturedProducts() {
         return productRepository.getFeaturedProducts();
     }
+    
+    public List<Product> addFeaturedProduct() {
+        return productRepository.addFeaturedProduct();
+    }
+    
+    public List<Product> removeFeaturedProduct() {
+        return productRepository.removeFeaturedProduct();
+    }
 
     public List<Product> getProductsOnSale() {
         return productRepository.getProductsOnSale();
