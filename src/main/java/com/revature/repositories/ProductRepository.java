@@ -14,4 +14,13 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query("FROM Product WHERE sale > 0")
     List<Product> getProductsOnSale();
+    
+    
+    
+    //Add the Featured attribute to an object
+    @Query("UPDATE Product SET featured = 'true' WHERE id = " + "id")
+    <Product> addFeaturedProduct();
+    
+    @Query("UPDATE Product SET featured = 'false' WHERE id = " + "id")
+    <Product> removeFeaturedProduct();
 }
