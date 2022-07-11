@@ -99,11 +99,43 @@ public class ProductController {
         }
     }
 
+    //Show Featured Products.
     @Authorized
     @GetMapping("/featured")
-    public ResponseEntity<List<Product>> getFeaturedProducts() {
+    public ResponseEntity<List<Product>> getFeaturedProducts((@PathVariable("id") int id) {
         return ResponseEntity.ok(productService.getFeaturedProducts());
     }
+    
+    //Add A Featured Product.
+    @Authorized
+    @PutMapping("/add-featured/{id}")
+    public ResponseEntity<Product> addFeaturedProduct((@PathVariable("id") int id) {
+        if(ProductIsNotFeatured(id))
+        {
+            return ResponseEntity.ok(productService.addFeaturedProduct());
+        }
+        else if(!ProductIsNotFeatured(id))
+        {
+            return ResponseEntity.internalServerError();    
+        }
+    }
+    
+    //Remove a Featured Product.
+    @Authorized
+    @PutMapping("/remove-featured/{id}")
+    public ResponseEntity<Product> removeFeaturedProduct((@PathVariable("id") int id) {
+        
+        if(ProductIsNotFeatured(id))
+        {
+            return ResponseEntity.internalServerError();   
+        }
+        else if(!ProductIsNotFeatured(id))
+        {
+            return ResponseEntity.ok(productService.removeFeaturedProduct())    
+        }
+    }
+    
+    
 
     @Authorized
     @GetMapping("/sale")
